@@ -1,14 +1,7 @@
 # Aquarium Light TCP Protocol (work-in-progress)
 
-This document summarizes what is currently known from these captures:
-- `idle.pcapng`
-- `switchmode.pcapng`
-- `intensity.pcapng`
-- `intensity_ordered.pcapng`
-- `open_in_manual.pcapng`
-- `open_in_auto.pcapng`
-- `icv6.pcapng`
-- `icv6_2.pcapng`
+This document summarizes what is currently known from private packet captures collected during reverse-engineering.
+Raw `.pcapng` files are intentionally not committed to this repository.
 
 ## Transport
 - TCP over port `80`.
@@ -77,7 +70,7 @@ Interpretation:
 - `0x5f/0x0c` = `ack_intensity`
 - channel values are percentage `0..100` (`0x00..0x64`)
 
-Channel order (confirmed from `intensity_ordered.pcapng`):
+Channel order (confirmed from ordered channel intensity traces):
 1. `6500K_CoolWhite+455nm_DeepBlue`
 2. `460nm_DeepBlue+480nm_Blue`
 3. `400-420nm_Violet+445nm_DeepBlue`
@@ -105,9 +98,9 @@ Channel order (confirmed from `intensity_ordered.pcapng`):
   - `ch3`
   - `ch4`
 
-For `open_in_auto.pcapng`, decoded points match app values exactly.
-For `program.pcapng`, the `set_program` payload uses the same point layout and matches the uploaded schedule.
-For `modify.pcapng`, app sends `set_preview_intensity (0x0f/0x0b)` while editing points, and only persists edits when `set_program (0x0f/0x0e)` is transmitted.
+In auto-open traces, decoded points match app values exactly.
+In program-upload traces, the `set_program` payload uses the same point layout and matches the uploaded schedule.
+In program-edit traces, app sends `set_preview_intensity (0x0f/0x0b)` while editing points, and only persists edits when `set_program (0x0f/0x0e)` is transmitted.
 
 ### Device info
 - `0x04/0x01` = `query_device_info`
