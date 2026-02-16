@@ -105,4 +105,4 @@ just check
 - `POST /api/validation/polling`
 
 ## Protocol Notes
-See `protocol.md` for reverse-engineered protocol details.
+See [`protocol.md`](protocol.md) for reverse-engineered protocol details.
