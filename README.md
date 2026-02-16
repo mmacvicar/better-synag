@@ -1,5 +1,9 @@
 # Maxpect Lights Portal
 
+[![CI](https://github.com/mmacvicar/better-synag/actions/workflows/ci.yml/badge.svg)](https://github.com/mmacvicar/better-synag/actions/workflows/ci.yml)
+[![Docker Publish](https://github.com/mmacvicar/better-synag/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/mmacvicar/better-synag/actions/workflows/docker-publish.yml)
+[![codecov](https://codecov.io/gh/mmacvicar/better-synag/graph/badge.svg)](https://codecov.io/gh/mmacvicar/better-synag)
+
 ![Maxpect Light Controller UI](docs/better-synag.png)
 
 Portal to control devices via Maxpect [ICV6](https://maxspect.co.uk/product-wide/icv6/169/) without using the official Syna-G app ([iOS](https://apps.apple.com/br/app/syna-g/id1080917075), [Android](https://play.google.com/store/apps/details?id=com.gdut.topview.lemon.maxspect.icv6&hl=pt_BR)), providing a much better experience.
