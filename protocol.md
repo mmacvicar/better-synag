@@ -6,6 +6,7 @@ Raw `.pcapng` files are intentionally not committed to this repository.
 ## Transport
 - TCP over port `80`.
 - Main control traffic is binary custom protocol.
+- No authentication or session challenge has been observed for basic control commands (`set_mode`, `set_intensity`, `set_program`) in tested traces.
 
 ## Frame families
 
@@ -101,6 +102,7 @@ Channel order (confirmed from ordered channel intensity traces):
 In auto-open traces, decoded points match app values exactly.
 In program-upload traces, the `set_program` payload uses the same point layout and matches the uploaded schedule.
 In program-edit traces, app sends `set_preview_intensity (0x0f/0x0b)` while editing points, and only persists edits when `set_program (0x0f/0x0e)` is transmitted.
+Device output behavior is interpolated between control points (not step-wise at each point).
 
 ### Device info
 - `0x04/0x01` = `query_device_info`
@@ -152,10 +154,13 @@ Observed sequence:
 1. `query_mode` -> `report_mode(auto)`
 2. `query_program` -> `report_program(points...)`
 3. Additional metadata traffic (`0x04/0x01`, `0x54/0x01`, and `0x05/0x01`/`0x55/0x01`)
+4. In mixed-device setups, metadata queries may include other attached device IDs (for example Gyre) even when light control is the main user action.
 
 ## Unknowns / next captures needed
-- Program write command (upload modified schedule)
-- "Simulate day" command behavior
-- Precise structure of `0x54/0x01` trailing metadata/name fields
-- Meaning of keepalive family `ff ee dd cc` fields
-- Meaning of `0x05/0x01` and `0x55/0x01`
+- "Simulate day" command behavior (not captured yet).
+- Full decode of `0x54/0x01` trailing metadata fields (after id/version bytes).
+- Exact semantic mapping of `report_device_info` version triplet to app `HW` and `SW` fields.
+- Keepalive/short-status family `ff ee dd cc` field semantics.
+- `0x05/0x01` and `0x55/0x01` meaning beyond current provisional `runtime_status` naming.
+- Multi-device routing edge cases when lights and pumps are both active under one ICV6.
+- Gyre protocol reverse-engineering is still pending; no dedicated protocol mapping work has been done yet.

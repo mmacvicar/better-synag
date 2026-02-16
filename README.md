@@ -1,7 +1,7 @@
 # Maxpect Lights Portal
 
-[![CI](https://github.com/mmacvicar/better-synag/actions/workflows/ci.yml/badge.svg)](https://github.com/mmacvicar/better-synag/actions/workflows/ci.yml)
-[![Docker Publish](https://github.com/mmacvicar/better-synag/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/mmacvicar/better-synag/actions/workflows/docker-publish.yml)
+[![CI](https://github.com/mmacvicar/better-synag/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mmacvicar/better-synag/actions/workflows/ci.yml)
+[![Docker Publish](https://github.com/mmacvicar/better-synag/actions/workflows/docker-publish.yml/badge.svg?branch=main)](https://github.com/mmacvicar/better-synag/actions/workflows/docker-publish.yml)
 [![codecov](https://codecov.io/gh/mmacvicar/better-synag/graph/badge.svg)](https://codecov.io/gh/mmacvicar/better-synag)
 
 ![Maxpect Light Controller UI](docs/better-synag.png)
