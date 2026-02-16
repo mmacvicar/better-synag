@@ -2,7 +2,8 @@
 
 ![Maxpect Light Controller UI](docs/better-synag.png)
 
-Internal-only async Python portal to control Maxspect lights through an ICV6 controller.
+Portal to control devices via Maxpect ICV6 without using the official Syna-G app, providing a much better experience.
+The protocol used with Maxpect RSX lights was reverse engineered and documented in [`protocol.md`](protocol.md).
 
 ## Internal Use Warning
 This project is intended for trusted home/internal networks. It currently has no authentication.
