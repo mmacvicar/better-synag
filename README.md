@@ -2,11 +2,11 @@
 
 ![Maxpect Light Controller UI](docs/better-synag.png)
 
-Portal to control devices via Maxpect ICV6 without using the official Syna-G app, providing a much better experience.
+Portal to control devices via Maxpect [ICV6](https://maxspect.co.uk/product-wide/icv6/169/) without using the official Syna-G app ([iOS](https://apps.apple.com/br/app/syna-g/id1080917075), [Android](https://play.google.com/store/apps/details?id=com.gdut.topview.lemon.maxspect.icv6&hl=pt_BR)), providing a much better experience.
 The protocol used with Maxpect RSX lights was reverse engineered and documented in [`protocol.md`](protocol.md).
 
 ## Internal Use Warning
-This project is intended for trusted home/internal networks. It currently has no authentication.
+This project is intended for trusted home/internal networks. As the ICV6 in your local network, this has no authentication.
 Do not expose it directly to the public internet.
 
 ## Features
