@@ -48,6 +48,8 @@ just dev
 ```
 
 ## Docker Deploy
+Docker Hub image: [`mmacvicarprett/better-synag`](https://hub.docker.com/r/mmacvicarprett/better-synag)
+
 1. Copy env file:
 ```bash
 cp .env.example .env
