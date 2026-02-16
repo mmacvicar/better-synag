@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICV6 Internal Portal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/timepicker-ui@4.1.5/dist/css/main.css" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="bg-shape one"></div>
+    <div class="bg-shape two"></div>
+
+    <main class="container">
+      <header class="hero">
+        <h1>Maxpect Light Controller</h1>
+        <p class="sub">Host: {{ host }} · Device: {{ device_id }}</p>
+        <div id="validation-banner" class="validation-banner is-unknown">
+          <span id="validation-light" class="validation-light" aria-hidden="true"></span>
+          <span id="validation-text">Validation status unknown</span>
+        </div>
+        <div class="hero-actions">
+          <div class="mode-toggle" role="group" aria-label="ICV6 mode">
+            <button id="toggle-manual" data-mode="manual" class="mode-btn toggle-btn">Manual</button>
+            <button id="toggle-auto" data-mode="auto" class="mode-btn toggle-btn">Auto</button>
+          </div>
+          <button id="refresh-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M23 4v6h-6"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M1 20v-6h6"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.5 9a9 9 0 0 1 14.1-3.4L23 10M1 14l5.4 4.4A9 9 0 0 0 20.5 15"/>
+            </svg>
+            <span>Reload State</span>
+          </button>
+          <button id="run-validation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/>
+            </svg>
+            <span>Run Validation</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="grid">
+        <article class="panel" id="manual-panel">
+          <div class="panel-title-row">
+            <h2>Manual Intensity</h2>
+            <p id="manual-unsaved" class="unsaved-note is-hidden">Unsaved changes</p>
+          </div>
+          <div class="editor-options">
+            <label><input id="manual-snap-5pct" type="checkbox" /> Snap intensities to 5%</label>
+          </div>
+          <div id="sliders"></div>
+          <button id="apply-intensity">Apply Intensity</button>
+          <button id="save-manual-preset">Save as Preset</button>
+        </article>
+
+        <article class="panel" id="auto-panel">
+          <div class="panel-title-row">
+            <h2>Program Editor</h2>
+            <span id="auto-unsaved" class="unsaved-note is-hidden">Unsaved changes</span>
+          </div>
+          <div class="row">
+            <div class="view-toggle" role="group" aria-label="Auto mode view">
+              <button id="auto-view-chart" class="toggle-btn is-active" type="button">Chart</button>
+              <button id="auto-view-json" class="toggle-btn" type="button">JSON</button>
+            </div>
+            <button id="reset-chart-view" type="button">Reset View</button>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="program-chart" aria-label="Program timeline chart"></canvas>
+            <div id="chart-legend" class="chart-legend"></div>
+            <p class="chart-mobile-help">
+              Tap a legend channel to focus it. Tap a point to select it. Drag anywhere to move selected point.
+              Double tap chart to add a point. Drag outside chart to delete.
+            </p>
+          </div>
+          <pre id="state-view" class="is-hidden">Loading…</pre>
+          <div class="editor-options">
+            <label><input id="auto-snap-5pct" type="checkbox" /> Snap intensities to 5%</label>
+            <label><input id="snap-15m" type="checkbox" /> Snap times to 15m (default 5m)</label>
+          </div>
+          <table id="program-table">
+            <thead>
+              <tr>
+                <th class="th-idx">#</th>
+                <th class="th-time">Time</th>
+                <th class="th-ch1">Cool+455</th>
+                <th class="th-ch2">Blue Duo</th>
+                <th class="th-ch3">Violet+445</th>
+                <th class="th-ch4">Warm+Red</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div class="row">
+            <button id="add-point">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/>
+              </svg>
+              <span>Add Point</span>
+            </button>
+            <button id="apply-program">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 9l5-5 5 5"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20 16v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3"/>
+              </svg>
+              <span>Upload Program</span>
+            </button>
+            <button id="discard-program" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v6h6"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13a9 9 0 1 0 3-6.7L3 7"/>
+              </svg>
+              <span>Discard Changes</span>
+            </button>
+            <button id="save-auto-preset">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-8H7v8M7 3v5h8"/>
+              </svg>
+              <span>Save as Preset</span>
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <h2>Presets</h2>
+        <ul id="preset-list">
+          {% if presets %}
+          {% for p in presets %}
+          <li class="preset-item"
+              data-mode="{{ p.mode }}"
+              data-intensity='{{ (p.intensity or {}) | tojson | e }}'
+              data-program='{{ (p.program or {}) | tojson | e }}'>
+            <div class="preset-main">
+              <div class="preset-head">
+                <span class="preset-title-wrap">
+                  <button class="preset-title-btn rename-preset-trigger" data-id="{{ p.id }}" data-name="{{ p.name | e }}" type="button">
+                    <span class="preset-title">{{ p.name }}</span>
+                  </button>
+                  <button class="rename-preset-icon rename-preset-trigger" data-id="{{ p.id }}" data-name="{{ p.name | e }}" type="button" title="Edit preset name" aria-label="Edit preset name">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+                    </svg>
+                  </button>
+                  <span class="mode-pill">{{ p.mode }}</span>
+                </span>
+                <span class="preset-time">Saved {{ p.created_at }}</span>
+              </div>
+              <canvas class="preset-mini-chart" aria-label="Preset preview"></canvas>
+            </div>
+            <div class="preset-actions">
+              <button class="apply-preset" data-id="{{ p.id }}">Load</button>
+              <button class="delete-preset icon-btn" data-id="{{ p.id }}" title="Delete preset" aria-label="Delete preset">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12M9 7V4h6v3m-7 4v6m4-6v6m4-10v12a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V7h8z"/>
+                </svg>
+              </button>
+            </div>
+          </li>
+          {% endfor %}
+          {% else %}
+          <li class="preset-empty">No presets yet. Save one from Manual or Auto mode.</li>
+          {% endif %}
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Validation Polling</h2>
+        <p class="section-help">
+          The backend can periodically query the ICV6 program and compare it with your active saved target.
+          Use this to detect drift even when the portal is closed.
+        </p>
+        <div class="editor-options">
+          <label><input id="polling-enabled" type="checkbox" /> Enable backend polling</label>
+          <label>
+            Every
+            <input id="polling-interval-minutes" type="number" min="1" max="1440" value="1" style="width: 6rem;" />
+            minutes
+          </label>
+        </div>
+        <button id="save-polling-config" type="button">Save Polling Settings</button>
+      </section>
+    </main>
+
+    <div id="ui-modal" class="ui-modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="ui-modal-title">
+      <div class="ui-modal-card">
+        <h3 id="ui-modal-title">Action</h3>
+        <p id="ui-modal-text"></p>
+        <input id="ui-modal-input" class="is-hidden" type="text" />
+        <div class="ui-modal-actions">
+          <button id="ui-modal-cancel" type="button">Cancel</button>
+          <button id="ui-modal-ok" type="button">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/timepicker-ui@4.1.5/dist/index.umd.js"></script>
+    <script type="module" src="/static/app.js"></script>
+  </body>
+</html>

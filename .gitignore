@@ -1,0 +1,21 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+coverage.xml
+.coverage
+htmlcov/
+portal.db
+.env
+.env.*
+!.env.example
+
+# Never commit reverse-engineering artifacts or private captures
+do_not_commit/
+data/
+*.pcap
+*.pcapng
+*_decoded_frames.json
+*_payloads.tsv

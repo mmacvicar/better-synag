@@ -1,0 +1,15 @@
+services:
+  maxpect-lights:
+    build: .
+    container_name: maxpect-lights
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      APP_HOST: 0.0.0.0
+      APP_PORT: ${APP_PORT:-8080}
+      DATABASE_PATH: /data/portal.db
+    ports:
+      - "${APP_PORT:-8080}:${APP_PORT:-8080}"
+    volumes:
+      - ./data_runtime:/data
